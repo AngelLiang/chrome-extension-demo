@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "fetch api",
+    "version": "1.0",
+    "content_scripts": [
+        {
+            "js": [
+                "demo.js"
+            ],
+            "matches": [
+                "http://jsonplaceholder.typicode.com/posts/1"
+            ]
+        }
+    ]
+}
