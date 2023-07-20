@@ -1,0 +1,10 @@
+{
+  "name": "click fetch",
+  "description": "click fetch",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
