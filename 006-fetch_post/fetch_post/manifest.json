@@ -1,0 +1,16 @@
+{
+  "name": "fetch post",
+  "description": "fetch post",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  // host_permissions：请求访问您的扩展中读取或修改主机数据的API，例如cookie、webRequest和选项卡。
+  "host_permissions": [
+    "*://jsonplaceholder.typicode.com/*"
+  ]
+}
