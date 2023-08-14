@@ -1,44 +1,63 @@
 const path = require('path');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const glob = require('glob');
+
+// 获取 'src/content' 下的所有 .js 文件
+const contentFiles = glob.sync('./src/content/*.js');
+const contentPath = contentFiles.map((path) => ('./' + path))
+
+// 获取 'src/content' 下的所有 .js 文件
+const imagesFiles = glob.sync('./src/images/*.js');
+const imagesPath = contentFiles.map((path) => ('./' + path))
 
 module.exports = {
-  mode: 'production', // 或者 'development'，取决于你的需求
+  devtool: 'source-map',
+  mode: 'development',
+  // mode: 'product',
   entry: {
-    hello: './src/hello.html',
+    content: contentPath,
+    popup: './src/popup/popup.js',
+    options: './src/options/options.js',
+    background: './src/background.js',
   },
+
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].js'
   },
+
+  // module: {
+  //   rules: [
+  //     {
+  //       test: /\.js$/,
+  //       exclude: /node_modules/,
+  //       use: 'babel-loader'
+  //     }
+  //   ]
+  // },
+
   plugins: [
-    // new HtmlWebpackPlugin({
-    //   template: './src/hello.html',
-    //   filename: 'hello_generated.html',
-    // }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/hello.html', to: 'hello.html' }, // 直接复制 hello.html
-        { from: './src/hello.png', to: 'hello.png' },
-        { from: './src/manifest.json', to: 'manifest.json' },
-      ],
-    }),
+        // '.' 表示目标是 'dist' 目录
+        { from: 'src/popup/popup.html', to: '.' },
+        // { from: 'src/popup/popup.css', to: '.' },
+        { from: 'src/options/options.html', to: '.' },
+        { from: 'src/options/button.css', to: '.' },
+        // { from: imagesPath, to: 'images/' },
+        { from: 'src/images/get_started16.png', to: 'images/' },
+        { from: 'src/images/get_started32.png', to: 'images/' },
+        { from: 'src/images/get_started48.png', to: 'images/' },
+        { from: 'src/images/get_started128.png', to: 'images/' },
+        // 使用顶层目录的 manifest.json
+        { from: 'manifest.json', to: '.' },
+      ]
+    })
   ],
-  // ...其他配置...
-  module: {
-    rules: [
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-            },
-          },
-        ]
-      },
-    ],
-  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 };
